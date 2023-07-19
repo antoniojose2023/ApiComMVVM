@@ -19,10 +19,8 @@ class MainActivity : AppCompatActivity() {
 
         val jsonPlaceHolderApi = RetrofitService.retrofit
         val repository = PostagemRepository(jsonPlaceHolderApi)
-        val factory = PostagemViewModelFactory(repository)
 
-        postagemViewModel = ViewModelProvider(this, factory)[PostagemViewModel::class.java]
-
+        postagemViewModel = ViewModelProvider(this, PostagemViewModelFactory(repository))[PostagemViewModel::class.java]
 
         postagemViewModel.liveData.observe(this){  postagens ->
                var resultado = ""

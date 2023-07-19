@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apicommvvm.data.model.Postagem
+import com.example.apicommvvm.data.repository.IPostagemRepository
 import com.example.apicommvvm.data.repository.PostagemRepository
 import kotlinx.coroutines.launch
 
-class PostagemViewModel(private val postagemRepository: PostagemRepository): ViewModel() {
+class PostagemViewModel(private val repository: IPostagemRepository): ViewModel() {
 
     val liveData : LiveData<List<Postagem>>
-        get() = postagemRepository.liveData
+        get() = repository.liveData
 
 //    init {
 //        exibirPostagens()
@@ -19,7 +20,7 @@ class PostagemViewModel(private val postagemRepository: PostagemRepository): Vie
 
     fun exibirPostagens(){
            viewModelScope.launch {
-               postagemRepository.recuperarPostagens()
+               repository.recuperarPostagens()
            }
     }
 

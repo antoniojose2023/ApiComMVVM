@@ -9,12 +9,12 @@ import retrofit2.Response
 
 import java.lang.Exception
 
-class PostagemRepository(private val jsonPlaceHolderApi: JsonPlaceHolderApi) {
+class PostagemRepository(private val jsonPlaceHolderApi: JsonPlaceHolderApi): IPostagemRepository {
 
-     var liveData = MutableLiveData<List<Postagem>>()
+     override var liveData = MutableLiveData<List<Postagem>>()
 
      @SuppressLint("SuspiciousIndentation")
-     suspend fun recuperarPostagens(){
+     override suspend fun recuperarPostagens(){
          var retorno : Response<List<Postagem>>? = null
 
             try{
@@ -28,6 +28,6 @@ class PostagemRepository(private val jsonPlaceHolderApi: JsonPlaceHolderApi) {
             }catch (ex: Exception){
                 println("Erro ${ex.message}")
             }
-     }
 
+     }
 }
