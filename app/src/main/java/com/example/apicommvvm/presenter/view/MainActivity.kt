@@ -7,6 +7,7 @@ import com.example.apicommvvm.data.api.JsonPlaceHolderApi
 import com.example.apicommvvm.data.api.RetrofitService
 import com.example.apicommvvm.data.repository.PostagemRepository
 import com.example.apicommvvm.databinding.ActivityMainBinding
+import com.example.apicommvvm.domain.usecase.PostagemUseCase
 import com.example.apicommvvm.presenter.viewmodel.PostagemViewModel
 import com.example.apicommvvm.presenter.viewmodel.PostagemViewModelFactory
 
@@ -19,16 +20,17 @@ class MainActivity : AppCompatActivity() {
 
         val jsonPlaceHolderApi = RetrofitService.retrofit
         val repository = PostagemRepository(jsonPlaceHolderApi)
+        val useCase = PostagemUseCase(repository)
 
-        postagemViewModel = ViewModelProvider(this, PostagemViewModelFactory(repository))[PostagemViewModel::class.java]
+        postagemViewModel = ViewModelProvider(this, PostagemViewModelFactory(useCase))[PostagemViewModel::class.java]
 
-        postagemViewModel.liveData.observe(this){  postagens ->
-               var resultado = ""
-               postagens.forEach { post ->
-                    resultado += "${post.title} \n"
-               }
+        postagemViewModel.liveData?.observe(this){ postagens ->
+            var resultado = ""
+            postagens.forEach { post ->
+                resultado += "${post.titulo} \n"
+            }
 
-              binding.tvResultado.text = resultado
+            binding.tvResultado.text = resultado
         }
 
     }

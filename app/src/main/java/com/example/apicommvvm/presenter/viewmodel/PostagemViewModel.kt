@@ -3,16 +3,18 @@ package com.example.apicommvvm.presenter.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.example.apicommvvm.data.model.Postagem
+import com.example.apicommvvm.data.model.PostagemResposta
 import com.example.apicommvvm.data.repository.IPostagemRepository
-import com.example.apicommvvm.data.repository.PostagemRepository
+import com.example.apicommvvm.domain.models.Postagem
+import com.example.apicommvvm.domain.usecase.PostagemUseCase
 import kotlinx.coroutines.launch
 
-class PostagemViewModel(private val repository: IPostagemRepository): ViewModel() {
+class PostagemViewModel(private val useCase: PostagemUseCase): ViewModel() {
 
-    val liveData : LiveData<List<Postagem>>
-        get() = repository.liveData
+    private var _liveData = MutableLiveData<List<Postagem>>()
+    val liveData : LiveData<List<Postagem>> = _liveData
 
 //    init {
 //        exibirPostagens()
@@ -20,8 +22,11 @@ class PostagemViewModel(private val repository: IPostagemRepository): ViewModel(
 
     fun exibirPostagens(){
            viewModelScope.launch {
-               repository.recuperarPostagens()
+               val list = useCase()
+               _liveData?.postValue(list)
            }
+
+
     }
 
 }
